@@ -16,8 +16,7 @@ jobs:
           git clone --depth=1 https://gitgud.io/rama-firmware-dumps/tecno/TECNO-CK6n.git gitgud-src
 
       - name: Copy GitGud repo into current repo
-        run: |
-          rsync -av --exclude='.git' gitgud-src/ ./
+        run: mv gitgud-src/* ./
 
       - name: Commit and push changes
         run: |
