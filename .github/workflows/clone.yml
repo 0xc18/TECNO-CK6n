@@ -1,0 +1,28 @@
+name: Mirror GitGud Repo
+
+on:
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  mirror:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout current GitHub repo
+        uses: actions/checkout@v3
+
+      - name: Clone GitGud repo
+        run: |
+          git clone --depth=1 https://gitgud.io/rama-firmware-dumps/tecno/TECNO-CK6n.git gitgud-src
+
+      - name: Copy GitGud repo into current repo
+        run: |
+          rsync -av --exclude='.git' gitgud-src/ ./
+
+      - name: Commit and push changes
+        run: |
+          git config user.name "GitHub Action"
+          git config user.email "action@github.com"
+          git add .
+          git commit -m "Mirror from GitGud TECNO-CK6n" || echo "Nothing to commit"
+          git push
